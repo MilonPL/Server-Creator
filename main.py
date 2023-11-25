@@ -189,7 +189,6 @@ def main():
                 print("Server created successfully.")
             else:
                 print("Not enough available unassigned allocations for the selected node.")
-                print(response_list_allocations.text)
 
 
 if __name__ == "__main__":
