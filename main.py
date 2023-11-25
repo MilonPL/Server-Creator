@@ -14,10 +14,9 @@ api_key = config.get('api_key')
 pterodactyl_url = config.get('pterodactyl_url')
 
 # URLs
-url_create_user = f"{pterodactyl_url}/api/application/users"
-url_list_users = f"{pterodactyl_url}/api/application/users"
-url_list_allocations = f"{pterodactyl_url}/api/application/nodes/{{}}/allocations"
-url_create_server = f"{pterodactyl_url}/api/application/servers"
+url_users = f"{pterodactyl_url}/api/application/users?per_page=1000"
+url_list_allocations = f"{pterodactyl_url}/api/application/nodes/{{}}/allocations?per_page=1000"
+url_create_server = f"{pterodactyl_url}/api/application/servers?per_page=1000"
 
 headers = {
     "Accept": "application/json",
@@ -43,7 +42,7 @@ def create_user():
 
     try:
         # Send the POST request to create a user
-        response_create_user = requests.post(url_create_user, headers=headers, json=data_create_user)
+        response_create_user = requests.post(url_users, headers=headers, json=data_create_user)
 
         # Check if the user creation request was successful (status code 2xx)
         response_create_user.raise_for_status()
@@ -71,7 +70,7 @@ def search_user():
             return None, None
 
         # Send the request to list all users
-        response_list_users = requests.get(url_list_users, headers=headers)
+        response_list_users = requests.get(url_users, headers=headers)
         response_list_users.raise_for_status()
 
         # Filter users based on the search input
@@ -190,6 +189,7 @@ def main():
                 print("Server created successfully.")
             else:
                 print("Not enough available unassigned allocations for the selected node.")
+                print(response_list_allocations.text)
 
 
 if __name__ == "__main__":
